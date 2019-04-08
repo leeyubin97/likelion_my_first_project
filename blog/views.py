@@ -18,6 +18,7 @@ def post_new(request):
             post.published_date = timezone.datetime.now()
             post.save()
             return redirect('detail', post_id=post.pk)
+            pass
     else:
         form= PostForm()
         return render(request, 'blog/new.html', {'form':form})        
