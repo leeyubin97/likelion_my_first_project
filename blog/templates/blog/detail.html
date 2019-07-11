@@ -1,8 +1,41 @@
-<div>
-    <h1>  {{post.title}}</h1>
-    <p>{{post.published_date}}</p>
-    <p>{{post.text}}</p>
-    <a href=" {% url 'home'%}"> 홈고고 </a>
-    <a href=" {% url 'edit' post.id %}"> 수정하기 </a>
-    <a href=" {% url 'delete' post.id %}"> 삭제하기 </a>
+
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<div style ="margin-left: 50px; margin-right: 50px; margin-top: 30px"> 
+    <h4 class= "text-right">
+    <a href=" {% url 'home'%}"> HOME </a>
+    <a href=" {% url 'edit' post.id %}"> EDIT </a>
+    <a href=" {% url 'delete' post.id %}"> DELETE </a> </h4>
+    <h2 class= "text-center"><strong> {{post.title}}</strong> </h2>
+    <br> <br>
+    <h4>{{post.text}}</h4>
+
+
+<br> <br> <br> <br>
+
+    <div class ="form-group">
+    <h4><strong> 댓글 적어주세요 </strong></h4>
+    <form method="POST" action="{% url 'add_comment' post.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type = "submit" class="save btn btn-default">작성</button>
+    </form>
+    </div>
+<br>
+{% for comment in post.comments.all %}
+    <div>
+     <h4><strong>{{comment.nickname}}</strong></h4>
+     <h5>{{comment.text|linebreaks}}</h5>
+     <a href="{% url 'comment_delete' comment_id=comment.id %}">댓글 삭제</a>
+    </div>
+{% empty %}
+<p> 댓글이 없어요 </p>
+{% endfor %}
 </div>
